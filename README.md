@@ -94,11 +94,26 @@ In our tests, this strategic shift resulted in a modified slack value of **-2.79
 <details>
 <summary><b>PHASE 4 — Clock Tree Synthesis and Real Clock Timing</b></summary>
 
-After the logic timing is optimized, we must physically distribute the clock signal using **Clock Tree Synthesis (CTS)**. In real silicon, wires have resistance and capacitance (RC) that distort the clock waveform and cause arrival time variations known as **clock skew**. If the skew is too large, the design becomes unreliable. To solve this, we use the **TritonCTS tool** to construct a balanced distribution network, typically following an **H-Tree topology**. This symmetrical structure ensures that the clock signal travels an equal distance from the source to every flip-flop, theoretically reducing skew to near zero [16-18].
+After the logic timing is optimized, we must physically distribute the clock signal using **Clock Tree Synthesis (CTS)**. In real silicon, wires have resistance and capacitance (RC) that distort the clock waveform and cause arrival time variations known as **clock skew**. If the skew is too large, the design becomes unreliable. To solve this, we use the **TritonCTS tool** to construct a balanced distribution network, typically following an **H-Tree topology**. This symmetrical structure ensures that the clock signal travels an equal distance from the source to every flip-flop, theoretically reducing skew to near zero.
 
-During this process, the tool inserts a series of **clock buffers** along the branches of the tree. These buffers serve a dual purpose: they restore the signal's drive strength to maintain sharp rise/fall times and protect the signal from RC-induced distortion. Once the physical clock tree is built, we transition from ideal clock analysis to **propagated clock analysis**. This provides a realistic view of the design's performance, accounting for the actual delays introduced by the clock buffers and the physical wires. While setup timing is usually the primary focus, hold timing becomes equally critical at this stage to ensure data remains stable long enough to be captured correctly [19-21].
+<img width="749" height="464" alt="Screenshot 2026-05-17 155421" src="https://github.com/user-attachments/assets/936dffa3-f12b-447c-a254-72c1d884ced0" />
+<img width="914" height="636" alt="Screenshot 2026-05-17 155821" src="https://github.com/user-attachments/assets/117996f6-8f62-499c-9efb-343207f7ae43" />
+<img width="892" height="618" alt="Screenshot 2026-05-17 155842" src="https://github.com/user-attachments/assets/937402c3-0a76-4319-ad81-16c4c7e68636" />
+<img width="903" height="598" alt="Screenshot 2026-05-17 155917" src="https://github.com/user-attachments/assets/998f62f1-1430-4a11-8f08-27b6c9b12f5b" />
+<img width="850" height="614" alt="Screenshot 2026-05-17 155945" src="https://github.com/user-attachments/assets/cce6e19d-cd52-46da-80d5-1e9c6632e8ee" />
+<img width="862" height="615" alt="Screenshot 2026-05-17 160012" src="https://github.com/user-attachments/assets/267d0a2e-2cf7-4c98-b972-0c6b5004d390" />
 
-**(Insert CTS Run Proof and Post-CTS Timing Report Screenshot Here)**
+
+<img width="908" height="554" alt="Screenshot 2026-05-17 160044" src="https://github.com/user-attachments/assets/d70ab57a-ae17-4ada-a8b6-ffa595e20e39" />
+
+
+
+During this process, the tool inserts a series of **clock buffers** along the branches of the tree. These buffers serve a dual purpose: they restore the signal's drive strength to maintain sharp rise/fall times and protect the signal from RC-induced distortion. Once the physical clock tree is built, we transition from ideal clock analysis to **propagated clock analysis**. This provides a realistic view of the design's performance, accounting for the actual delays introduced by the clock buffers and the physical wires. While setup timing is usually the primary focus, hold timing becomes equally critical at this stage to ensure data remains stable long enough to be captured correctly
+
+<img width="684" height="343" alt="Screenshot 2026-05-17 160102" src="https://github.com/user-attachments/assets/c59adf15-e567-4871-8aa8-29f4582e19f9" />
+
+
+
 </details>
 
 ---
