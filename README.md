@@ -28,11 +28,34 @@ The synthesis results for the `picorv32a` design indicate a total cell count of 
 <details>
 <summary><b>PHASE 2 — Floorplanning, Macros, and Physical Constraints</b></summary>
 
-Floorplanning is the architectural phase where the physical boundaries of the silicon are defined. This involves determining the dimensions for both the **Core** (the internal area where standard logic cells are placed) and the **Die** (the total silicon area including I/O pads). Two critical parameters managed in the `config.tcl` file are the **Aspect Ratio** and the **Utilization Factor**. The utilization factor represents the ratio between the area occupied by the netlist and the total core area. While 100% utilization is theoretically possible, it is practically avoided (typically capped at 50-60%) to leave sufficient "white space" for routing interconnects and power distribution networks [5, 6].
+Floorplanning is the architectural phase where the physical boundaries of the silicon are defined. This involves determining the dimensions for both the **Core** (the internal area where standard logic cells are placed) and the **Die** (the total silicon area including I/O pads). 
+<img width="910" height="397" alt="Screenshot 2026-05-17 104705" src="https://github.com/user-attachments/assets/0580aaff-1df0-4cc6-b842-ef9b5bab9988" />
 
-In this lab, the core utilization was initially set to 10% and subsequently increased to **30%** by overriding the default settings in the `sky130A_sky130_fd_sc_hd_config.tcl` file. This adjustment pack standard cells more densely, which significantly reduces the total die area as evidenced in the generated `.def` files. Furthermore, large functional blocks like RAM are treated as **Macros**. Unlike standard cells, these are pre-placed as "black boxes" before the main floorplanning and placement stages. To ensure supply stability and prevent **IR Drop**, which can push signals into the "undefined region" and cause functional failure, we surround these macros with **decoupling capacitors (DECAP)**. These local charge reservoirs provide the high instantaneous switching current needed to maintain stable VDD and VSS levels [7-9].
+Two critical parameters managed in the `config.tcl` file are the **Aspect Ratio** and the **Utilization Factor**. The utilization factor represents the ratio between the area occupied by the netlist and the total core area. While 100% utilization is theoretically possible, it is practically avoided (typically capped at 50-60%) to leave sufficient "white space" for routing interconnects and power distribution networks
+<img width="1082" height="475" alt="Screenshot 2026-05-17 105402" src="https://github.com/user-attachments/assets/af50766d-7d36-4b37-9bf7-7e1cd8840320" />
+<img width="1114" height="554" alt="Screenshot 2026-05-17 120113" src="https://github.com/user-attachments/assets/6feb9612-4d0f-4a85-b3ca-9c57b8660573" />
 
-**(Insert Floorplan Configuration and Layout View Screenshot Here)**
+Corresponding def file:
+
+<img width="772" height="551" alt="Screenshot 2026-05-17 120155" src="https://github.com/user-attachments/assets/9c9ddfc7-9196-47bc-9429-55ac81b9970c" />
+
+
+In this lab, the core utilization was initially set to 10% and subsequently increased to **30%** by overriding the default settings in the `sky130A_sky130_fd_sc_hd_config.tcl` file. 
+<img width="1099" height="371" alt="Screenshot 2026-05-17 120555" src="https://github.com/user-attachments/assets/0a947f6b-109a-4236-86a8-93977e70e406" />
+
+This adjustment pack standard cells more densely, which significantly reduces the total die area as evidenced in the generated `.def` files. 
+<img width="1128" height="623" alt="Screenshot 2026-05-17 120702" src="https://github.com/user-attachments/assets/b11f3086-d286-4db6-a5f4-f25655a9e9ff" />
+<img width="709" height="742" alt="Screenshot 2026-05-17 120953" src="https://github.com/user-attachments/assets/b87fcc42-dda9-499c-a735-74a62bdcf9ea" />
+
+Furthermore, large functional blocks like RAM are treated as **Macros**. Unlike standard cells, these are pre-placed as "black boxes" before the main floorplanning and placement stages. To ensure supply stability and prevent **IR Drop**, which can push signals into the "undefined region" and cause functional failure, we surround these macros with **decoupling capacitors (DECAP)**. These local charge reservoirs provide the high instantaneous switching current needed to maintain stable VDD and VSS levels. Causing change in die area :
+
+**<img width="741" height="741" alt="Screenshot 2026-05-17 121034" src="https://github.com/user-attachments/assets/65d00305-6ea0-4c4e-a3cb-926df37a4201" />
+
+<img width="982" height="656" alt="Screenshot 2026-05-17 121100" src="https://github.com/user-attachments/assets/4c89dc81-152e-427c-b7a0-94197466e8cd" />
+
+<img width="987" height="597" alt="Screenshot 2026-05-17 123315" src="https://github.com/user-attachments/assets/ae36ba3b-5886-48ff-8fc6-eeb1b5333484" />
+
+**
 </details>
 
 ---
