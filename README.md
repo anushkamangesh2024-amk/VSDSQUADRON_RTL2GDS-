@@ -5,11 +5,22 @@
 <details>
 <summary><b>PHASE 1 — OpenLANE Flow and Logic Synthesis Familiarization</b></summary>
 
-The initial phase of the design flow focuses on establishing a robust automated environment using the **OpenLANE pipeline**. This process begins by invoking the Docker container via the `make mount` command, followed by initiating the interactive Tcl shell with `./flow.tcl -interactive`. To ensure the environment is correctly configured for the **Sky130 PDK**, we load the necessary software versioning using `package require openlane 1.0.2`. The design preparation step, executed through `prep -design picorv32a`, is a critical prerequisite that performs several background tasks: it loads the Verilog RTL, reads the specific `config.tcl` parameters, and links the standard cell libraries while creating the directory structure required to store subsequent logs and reports [1, 2].
+The initial phase of the design flow focuses on establishing a robust automated environment using the **OpenLANE pipeline**. This process begins by the `make mount` command, followed by initiating the interactive Tcl shell with `./flow.tcl -interactive`. To ensure the environment is correctly configured for the **Sky130 PDK**, we load the necessary software versioning using `package require openlane 1.0.2`. The design preparation step, executed through `prep -design picorv32a`, is a critical prerequisite that performs several background tasks: it loads the Verilog RTL, reads the specific `config.tcl` parameters, and links the standard cell libraries while creating the directory structure required to store subsequent logs and reports 
 
-Once the environment is prepared, we perform logic synthesis using the **Yosys tool** via the `run_synthesis` command. This stage transforms the high-level RTL code into a gate-level netlist where every logical operation is mapped to a specific physical cell from the **Sky130 standard cell library**. During this optimization, the tool analyzes area and timing to ensure the design meets basic performance constraints. The synthesis results for the `picorv32a` design indicate a total cell count of 15,762, including 1,613 flip-flops, resulting in a **flop ratio of 10.23%**. Initial timing analysis reveals a positive outcome with zero Total Negative Slack (TNS) and zero Worst Negative Slack (WNS), providing a safe setup slack margin of **0.52ns** [3, 4].
+<img width="1591" height="657" alt="Screenshot 2026-05-17 103216" src="https://github.com/user-attachments/assets/72461f80-821f-47ef-8356-e702acbfc16d" />
 
-**(Insert Synthesis Proof and Report Screenshot Here)**
+<img width="393" height="511" alt="Screenshot 2026-05-17 103840" src="https://github.com/user-attachments/assets/ac2a326e-e4d7-4f33-b53f-3b7a8f90b904" />
+
+<img width="429" height="496" alt="Screenshot 2026-05-17 103905" src="https://github.com/user-attachments/assets/f02c46a1-df5c-495a-b7c4-1d99f7f961d4" />
+
+Once the environment is prepared, we perform logic synthesis using the **Yosys tool** via the `run_synthesis` command. This stage transforms the high-level RTL code into a gate-level netlist where every logical operation is mapped to a specific physical cell from the **Sky130 standard cell library**. During this optimization, the tool analyzes area and timing to ensure the design meets basic performance constraints. 
+<img width="407" height="495" alt="Screenshot 2026-05-17 103930" src="https://github.com/user-attachments/assets/ca968fd8-6331-449f-9ce4-198d488cec41" />
+
+The synthesis results for the `picorv32a` design indicate a total cell count of 15,762, including 1,613 flip-flops, resulting in a **flop ratio of 10.23%**. Initial timing analysis reveals a positive outcome with zero Total Negative Slack (TNS) and zero Worst Negative Slack (WNS), providing a safe setup slack margin of **0.52ns** 
+
+<img width="603" height="467" alt="Screenshot 2026-05-17 103952" src="https://github.com/user-attachments/assets/d5dbcf2f-ba81-45f1-b1f9-d43a427e3b3f" />
+
+
 </details>
 
 ---
