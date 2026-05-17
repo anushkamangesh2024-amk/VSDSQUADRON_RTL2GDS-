@@ -5,9 +5,11 @@
 <details>
 <summary><b>PHASE 1 — OpenLANE Flow and Logic Synthesis Familiarization</b></summary>
 
-The initial phase of the design flow focuses on establishing a robust automated environment using the **OpenLANE pipeline**. This process begins by the `make mount` command, followed by initiating the interactive Tcl shell with `./flow.tcl -interactive`. To ensure the environment is correctly configured for the **Sky130 PDK**, we load the necessary software versioning using `package require openlane 1.0.2`. The design preparation step, executed through `prep -design picorv32a`, is a critical prerequisite that performs several background tasks: it loads the Verilog RTL, reads the specific `config.tcl` parameters, and links the standard cell libraries while creating the directory structure required to store subsequent logs and reports 
+The initial phase of the design flow focuses on establishing a robust automated environment using the **OpenLANE pipeline**. This process begins by the `make mount` command, followed by initiating the interactive Tcl shell with `./flow.tcl -interactive`. 
 
 <img width="1591" height="657" alt="Screenshot 2026-05-17 103216" src="https://github.com/user-attachments/assets/72461f80-821f-47ef-8356-e702acbfc16d" />
+
+To ensure the environment is correctly configured for the **Sky130 PDK**, we load the necessary software versioning using `package require openlane 1.0.2`. The design preparation step, executed through `prep -design picorv32a`, is a critical prerequisite that performs several background tasks: it loads the Verilog RTL, reads the specific `config.tcl` parameters, and links the standard cell libraries while creating the directory structure required to store subsequent logs and reports 
 
 <img width="393" height="511" alt="Screenshot 2026-05-17 103840" src="https://github.com/user-attachments/assets/ac2a326e-e4d7-4f33-b53f-3b7a8f90b904" />
 
@@ -63,11 +65,28 @@ Furthermore, large functional blocks like RAM are treated as **Macros**. Unlike 
 <details>
 <summary><b>PHASE 3 — Static Timing Analysis with Ideal Clocks</b></summary>
 
-Phase 3 introduces **Static Timing Analysis (STA)** using the **OpenSTA** tool to verify that the logic meets the required operating frequency. At this foundation stage, we assume an **ideal clock**, meaning the clock signal arrives at every flip-flop simultaneously with zero delay or skew. This allows us to focus exclusively on the combinational logic delays between the launch and capture flip-flops. We utilize a custom `pre_sta.conf` file to analyze the post-synthesis netlist and identify paths where the combinational delay exceeds the allowed clock period minus the setup time and uncertainty [10-12].
+Phase 3 introduces **Static Timing Analysis (STA)** using the **OpenSTA** tool to verify that the logic meets the required operating frequency. At this foundation stage, we assume an **ideal clock**, meaning the clock signal arrives at every flip-flop simultaneously with zero delay or skew. This allows us to focus exclusively on the combinational logic delays between the launch and capture flip-flops. We utilize a custom `pre_sta.conf` file to analyze the post-synthesis netlist and identify paths where the combinational delay exceeds the allowed clock period minus the setup time and uncertainty.
 
-A major contributor to timing violations is **high fanout**, where a single net drives too many subsequent cells (e.g., a fanout of 10), leading to increased capacitive loading and slower signal transitions. We mitigate these issues by **upsizing buffers** to increase drive strength, which reduces RC delay and improves slack. Additionally, the synthesis strategy can be pivoted; by switching from **"AREA 0"** (focused on minimizing size) to **"DELAY 3"** (prioritizing speed), the tool performs more aggressive logic restructuring to close timing. In our tests, this strategic shift resulted in a modified slack value of **-2.79ns**, demonstrating how tool-driven optimizations can drastically alter the timing profile of the netlist [13-15].
+<img width="747" height="231" alt="Screenshot 2026-05-17 144315" src="https://github.com/user-attachments/assets/a7e9ce40-8e52-4ff6-b76b-3bdb564b4b20" />
 
-**(Insert OpenSTA Timing Report and Slack Optimization Screenshot Here)**
+<img width="860" height="577" alt="Screenshot 2026-05-17 144743" src="https://github.com/user-attachments/assets/d02694eb-b1f5-4f84-bd72-3a450f513bc7" />
+
+
+A major contributor to timing violations is **high fanout**, where a single net drives too many subsequent cells (e.g. here we take a fanout of 10), leading to increased capacitive loading and slower signal transitions. We mitigate these issues by **upsizing buffers** to increase drive strength, which reduces RC delay and improves slack. 
+<img width="721" height="574" alt="Screenshot 2026-05-17 144805" src="https://github.com/user-attachments/assets/e7344202-334c-4283-b149-ffe4601cf6cd" />
+
+This modifies the slack:
+<img width="808" height="570" alt="Screenshot 2026-05-17 144953" src="https://github.com/user-attachments/assets/da17e246-c431-482d-bad1-111c8ae5f20f" />
+
+
+Additionally, the synthesis strategy can be pivoted; by switching from **"AREA 0"** (focused on minimizing size) to **"DELAY 3"** (prioritizing speed), the tool performs more aggressive logic restructuring to close timing. 
+<img width="925" height="266" alt="Screenshot 2026-05-17 154554" src="https://github.com/user-attachments/assets/854b4515-8682-4c51-80ce-d9a35b40ef3d" />
+
+
+In our tests, this strategic shift resulted in a modified slack value of **-2.79ns**, demonstrating how tool-driven optimizations can drastically alter the timing profile of the netlist.
+
+<img width="824" height="616" alt="Screenshot 2026-05-17 154656" src="https://github.com/user-attachments/assets/cc0754ca-f3b5-4435-99bb-dd283f25e1e3" />
+
 </details>
 
 ---
