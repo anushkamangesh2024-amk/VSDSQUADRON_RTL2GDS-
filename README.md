@@ -121,9 +121,26 @@ During this process, the tool inserts a series of **clock buffers** along the br
 <details>
 <summary><b>PHASE 5 — Power Distribution Network and Routing</b></summary>
 
-The final foundation phase involves establishing the **Power Distribution Network (PDN)** and performing signal routing. The PDN is constructed immediately following floorplanning and before any signal routing occurs. This grid, consisting of VDD and VSS rails and stripes, is designed to carry power across the entire chip with minimal resistance. To achieve this, the power network occupies the **top, thickest metal layers**, which have the lowest resistance and are best suited for high-current delivery. This robust grid prevents **ground bounce** and voltage drops that occur when many logic gates switch simultaneously [13, 21, 22].
+The final foundation phase involves establishing the **Power Distribution Network (PDN)** and performing signal routing. The PDN is constructed immediately following floorplanning and before any signal routing occurs. This grid, consisting of VDD and VSS rails and stripes, is designed to carry power across the entire chip with minimal resistance. To achieve this, the power network occupies the **top, thickest metal layers**, which have the lowest resistance and are best suited for high-current delivery. This robust grid prevents **ground bounce** and voltage drops that occur when many logic gates switch simultaneously 
+<img width="984" height="515" alt="image" src="https://github.com/user-attachments/assets/937096d9-d3a0-4053-b402-4a05df2773fd" />
 
-Once the power grid is established, the flow proceeds to **Routing**, which is divided into two distinct stages. First, **Global Routing (FastRoute)** creates a coarse 3D grid and generates "routing guides" to plan the approximate paths for all nets while managing congestion. Second, **Detailed Routing (TritonRoute)** uses these guides to draw the exact metal geometries and insert vias between layers. This stage ensures that all pins are connected according to the netlist while strictly adhering to **Design Rule Checks (DRC)**. The final output is a clean, routed layout that satisfies all manufacturing requirements and is ready for GDSII generation [23-25].
+<img width="749" height="532" alt="Screenshot 2026-05-17 162807" src="https://github.com/user-attachments/assets/40a6ffa9-7255-48f8-8238-049057cb02a6" />
 
-**(Insert PDN Generation Log and Final Routed Layout Screenshot Here)**
+<img width="935" height="455" alt="image" src="https://github.com/user-attachments/assets/04e2770d-a487-483e-9290-4eaa112ccc92" />
+
+<img width="613" height="642" alt="image" src="https://github.com/user-attachments/assets/ef77336b-94e5-489a-a591-41fff2934c93" />
+
+
+
+Once the power grid is established, the flow proceeds to **Routing**, which is divided into two distinct stages. First, **Global Routing (FastRoute)** creates a coarse 3D grid and generates "routing guides" to plan the approximate paths for all nets while managing congestion. Second, **Detailed Routing (TritonRoute)** uses these guides to draw the exact metal geometries and insert vias between layers. This stage ensures that all pins are connected according to the netlist while strictly adhering to **Design Rule Checks (DRC)**. The final output is a clean, routed layout that satisfies all manufacturing requirements and is ready for GDSII generation 
+
+<img width="1012" height="651" alt="image" src="https://github.com/user-attachments/assets/e950d0e4-cdf2-4410-803c-6132a64d4a31" />
+
+<img width="819" height="410" alt="image" src="https://github.com/user-attachments/assets/182825aa-79e9-43dc-80ff-f5901047b3dd" />
+
+
+<img width="1285" height="794" alt="image" src="https://github.com/user-attachments/assets/3e292fc0-8d09-4fd2-9546-62e086b997d2" />
+
+
+
 </details>
