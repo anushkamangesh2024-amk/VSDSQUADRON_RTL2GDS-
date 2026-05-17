@@ -1,41 +1,61 @@
-### VSD-Squadron RTL to GDSII SOC Implementation
-#### WEEK-1 (Digital VLSI SoC Design and Planning – Foundation Phase)
+## VSD-Squadron RTL to GDSII SOC Implementation
 
-The process begins with invoking the OpenLANE flow, which automates the conversion of a hardware description (RTL) into a finalized silicon layout (GDSII) [1, 2]. Preparing the design involves initializing environment variables such as the Process Design Kit (PDK), standard cell libraries, and Synopsys Design Constraints (SDC) to match manufacturing rules [1, 3, 4]. 
+## WEEK-1 (Digital VLSI SoC Design and Planning – Foundation Phase)
 
-During the logic synthesis stage using Yosys, the RTL code is transformed into a gate-level netlist mapped to the Sky130 standard cell library [5-7]. The metrics from this implementation are detailed below:
+<details>
+<summary><b>PHASE 1 — OpenLANE Flow and Logic Synthesis Familiarization</b></summary>
 
-*   **Flop Ratio:** (Number of Flip-Flops / Total Number of Cells) = 1613 / 15762 = **10.23%** [1, 7].
-*   **Synthesis Timing:** The report indicates a Worst Setup Slack of **0.52 ns**, confirming that the design meets initial timing requirements with a positive margin [8].
+The initial phase of the design flow focuses on establishing a robust automated environment using the **OpenLANE pipeline**. This process begins by invoking the Docker container via the `make mount` command, followed by initiating the interactive Tcl shell with `./flow.tcl -interactive`. To ensure the environment is correctly configured for the **Sky130 PDK**, we load the necessary software versioning using `package require openlane 1.0.2`. The design preparation step, executed through `prep -design picorv32a`, is a critical prerequisite that performs several background tasks: it loads the Verilog RTL, reads the specific `config.tcl` parameters, and links the standard cell libraries while creating the directory structure required to store subsequent logs and reports [1, 2].
 
-**(Insert Synthesis Statistics and Timing Report Image Here)**
+Once the environment is prepared, we perform logic synthesis using the **Yosys tool** via the `run_synthesis` command. This stage transforms the high-level RTL code into a gate-level netlist where every logical operation is mapped to a specific physical cell from the **Sky130 standard cell library**. During this optimization, the tool analyzes area and timing to ensure the design meets basic performance constraints. The synthesis results for the `picorv32a` design indicate a total cell count of 15,762, including 1,613 flip-flops, resulting in a **flop ratio of 10.23%**. Initial timing analysis reveals a positive outcome with zero Total Negative Slack (TNS) and zero Worst Negative Slack (WNS), providing a safe setup slack margin of **0.52ns** [3, 4].
 
----
-
-Floorplanning involves defining the physical boundaries of the die and core area based on the dimensions of the logic gates in the netlist [9]. Key parameters like the **Aspect Ratio** (Height/Width) and **Utilization Factor** (Netlist Area / Total Core Area) are defined within the `config.tcl` file [10, 11]. 
-
-In this implementation, the core utilization was initially set at 10% and later increased to **30%** by overriding the configuration in the `sky130A_sky130_fd_sc_hd_config.tcl` file [12, 13]. This adjustment packs standard cells more densely, reducing the overall die area as observed in the resulting DEF files [10, 13]. 
-
-Additionally, large IP blocks such as RAM are treated as **Macros**. Unlike standard cells, these are pre-placed as "black boxes" before the floorplanning and placement of standard logic gates, meaning only their input/output pins are relevant for the current flow [10, 14, 15].
-
-**(Insert Floorplan View and Die Area DEF File Details Image Here)**
+**(Insert Synthesis Proof and Report Screenshot Here)**
+</details>
 
 ---
 
-Static Timing Analysis (STA) is performed using **OpenSTA** to verify setup and hold constraints, initially assuming an ideal clock distribution [16, 17]. A custom `pre_sta.conf` file is utilized to analyze the post-synthesis netlist [18, 19].
+<details>
+<summary><b>PHASE 2 — Floorplanning, Macros, and Physical Constraints</b></summary>
 
-To optimize timing, we identify high-fanout nets (e.g., those driving more than 10 cells) and upsize buffers to reduce capacitive loading and RC delay [18, 20, 21]. Furthermore, modifying the synthesis strategy from **"AREA 0"** (size-focused) to **"DELAY 3"** (speed-focused) significantly improves performance, shifting the slack to values such as **-2.79 ns** in optimized scenarios [18, 20].
+Floorplanning is the architectural phase where the physical boundaries of the silicon are defined. This involves determining the dimensions for both the **Core** (the internal area where standard logic cells are placed) and the **Die** (the total silicon area including I/O pads). Two critical parameters managed in the `config.tcl` file are the **Aspect Ratio** and the **Utilization Factor**. The utilization factor represents the ratio between the area occupied by the netlist and the total core area. While 100% utilization is theoretically possible, it is practically avoided (typically capped at 50-60%) to leave sufficient "white space" for routing interconnects and power distribution networks [5, 6].
 
-**(Insert OpenSTA Timing Report and Slack Optimization Image Here)**
+In this lab, the core utilization was initially set to 10% and subsequently increased to **30%** by overriding the default settings in the `sky130A_sky130_fd_sc_hd_config.tcl` file. This adjustment pack standard cells more densely, which significantly reduces the total die area as evidenced in the generated `.def` files. Furthermore, large functional blocks like RAM are treated as **Macros**. Unlike standard cells, these are pre-placed as "black boxes" before the main floorplanning and placement stages. To ensure supply stability and prevent **IR Drop**, which can push signals into the "undefined region" and cause functional failure, we surround these macros with **decoupling capacitors (DECAP)**. These local charge reservoirs provide the high instantaneous switching current needed to maintain stable VDD and VSS levels [7-9].
 
----
-
-Clock Tree Synthesis (CTS) is then executed to build a balanced distribution network, often using an **H-Tree** structure to ensure the clock signal reaches all flip-flops with minimal skew [22, 23]. After constructing the tree with buffers to restore signal integrity, timing is re-analyzed using **real, propagated clocks** rather than ideal ones [24-26].
-
-**(Insert CTS Run Results and Clock Tree Screenshot Here)**
+**(Insert Floorplan Configuration and Layout View Screenshot Here)**
+</details>
 
 ---
 
-The **Power Distribution Network (PDN)** is generated immediately after floorplanning but before final signal routing [18, 27]. To minimize IR drop and supply instability, the network utilizes the **top, thickest metal layers** for VDD and VSS, ensuring low-resistance power travel across the entire chip logic [18, 28, 29]. The flow concludes with global and detailed routing to finalize the physical interconnects [30, 31].
+<details>
+<summary><b>PHASE 3 — Static Timing Analysis with Ideal Clocks</b></summary>
 
-**(Insert PDN Generation Log and Final Routed Layout Image Here)**
+Phase 3 introduces **Static Timing Analysis (STA)** using the **OpenSTA** tool to verify that the logic meets the required operating frequency. At this foundation stage, we assume an **ideal clock**, meaning the clock signal arrives at every flip-flop simultaneously with zero delay or skew. This allows us to focus exclusively on the combinational logic delays between the launch and capture flip-flops. We utilize a custom `pre_sta.conf` file to analyze the post-synthesis netlist and identify paths where the combinational delay exceeds the allowed clock period minus the setup time and uncertainty [10-12].
+
+A major contributor to timing violations is **high fanout**, where a single net drives too many subsequent cells (e.g., a fanout of 10), leading to increased capacitive loading and slower signal transitions. We mitigate these issues by **upsizing buffers** to increase drive strength, which reduces RC delay and improves slack. Additionally, the synthesis strategy can be pivoted; by switching from **"AREA 0"** (focused on minimizing size) to **"DELAY 3"** (prioritizing speed), the tool performs more aggressive logic restructuring to close timing. In our tests, this strategic shift resulted in a modified slack value of **-2.79ns**, demonstrating how tool-driven optimizations can drastically alter the timing profile of the netlist [13-15].
+
+**(Insert OpenSTA Timing Report and Slack Optimization Screenshot Here)**
+</details>
+
+---
+
+<details>
+<summary><b>PHASE 4 — Clock Tree Synthesis and Real Clock Timing</b></summary>
+
+After the logic timing is optimized, we must physically distribute the clock signal using **Clock Tree Synthesis (CTS)**. In real silicon, wires have resistance and capacitance (RC) that distort the clock waveform and cause arrival time variations known as **clock skew**. If the skew is too large, the design becomes unreliable. To solve this, we use the **TritonCTS tool** to construct a balanced distribution network, typically following an **H-Tree topology**. This symmetrical structure ensures that the clock signal travels an equal distance from the source to every flip-flop, theoretically reducing skew to near zero [16-18].
+
+During this process, the tool inserts a series of **clock buffers** along the branches of the tree. These buffers serve a dual purpose: they restore the signal's drive strength to maintain sharp rise/fall times and protect the signal from RC-induced distortion. Once the physical clock tree is built, we transition from ideal clock analysis to **propagated clock analysis**. This provides a realistic view of the design's performance, accounting for the actual delays introduced by the clock buffers and the physical wires. While setup timing is usually the primary focus, hold timing becomes equally critical at this stage to ensure data remains stable long enough to be captured correctly [19-21].
+
+**(Insert CTS Run Proof and Post-CTS Timing Report Screenshot Here)**
+</details>
+
+---
+
+<details>
+<summary><b>PHASE 5 — Power Distribution Network and Routing</b></summary>
+
+The final foundation phase involves establishing the **Power Distribution Network (PDN)** and performing signal routing. The PDN is constructed immediately following floorplanning and before any signal routing occurs. This grid, consisting of VDD and VSS rails and stripes, is designed to carry power across the entire chip with minimal resistance. To achieve this, the power network occupies the **top, thickest metal layers**, which have the lowest resistance and are best suited for high-current delivery. This robust grid prevents **ground bounce** and voltage drops that occur when many logic gates switch simultaneously [13, 21, 22].
+
+Once the power grid is established, the flow proceeds to **Routing**, which is divided into two distinct stages. First, **Global Routing (FastRoute)** creates a coarse 3D grid and generates "routing guides" to plan the approximate paths for all nets while managing congestion. Second, **Detailed Routing (TritonRoute)** uses these guides to draw the exact metal geometries and insert vias between layers. This stage ensures that all pins are connected according to the netlist while strictly adhering to **Design Rule Checks (DRC)**. The final output is a clean, routed layout that satisfies all manufacturing requirements and is ready for GDSII generation [23-25].
+
+**(Insert PDN Generation Log and Final Routed Layout Screenshot Here)**
+</details>
