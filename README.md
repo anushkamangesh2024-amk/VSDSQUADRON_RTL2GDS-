@@ -9,16 +9,29 @@ The initial phase of the design flow focuses on establishing a robust automated 
 
 <img width="1591" height="657" alt="Screenshot 2026-05-17 103216" src="https://github.com/user-attachments/assets/72461f80-821f-47ef-8356-e702acbfc16d" />
 
-To ensure the environment is correctly configured for the **Sky130 PDK**, we load the necessary software versioning using `package require openlane 1.0.2`. The design preparation step, executed through `prep -design picorv32a`, is a critical prerequisite that performs several background tasks: it loads the Verilog RTL, reads the specific `config.tcl` parameters, and links the standard cell libraries while creating the directory structure required to store subsequent logs and reports 
+To ensure the environment is correctly configured for the **Sky130 PDK**, we load the necessary software versioning using `package require openlane 1.0.2`. The design preparation step, executed through `prep -design picorv32a`, is a critical prerequisite that performs several background tasks: it loads the Verilog RTL, reads the specific `config.tcl` parameters, and links the standard cell libraries while creating the directory structure required to store subsequent logs and reports. The prep -design picorv32a command is used to initialize the OpenLane flow specifically for the picorv32a design
+. It acts as a foundational step that prepares the environment for the ASIC design flow by loading Verilog RTL files and reading the essential config.tcl parameters. During this process, the tool links the Sky130 standard cell library, applies clock and design constraints, and establishes a dedicated runs/ directory to store all generated logs, reports, and design results
 
 <img width="393" height="511" alt="Screenshot 2026-05-17 103840" src="https://github.com/user-attachments/assets/ac2a326e-e4d7-4f33-b53f-3b7a8f90b904" />
 
 <img width="429" height="496" alt="Screenshot 2026-05-17 103905" src="https://github.com/user-attachments/assets/f02c46a1-df5c-495a-b7c4-1d99f7f961d4" />
 
-Once the environment is prepared, we perform logic synthesis using the **Yosys tool** via the `run_synthesis` command. This stage transforms the high-level RTL code into a gate-level netlist where every logical operation is mapped to a specific physical cell from the **Sky130 standard cell library**. During this optimization, the tool analyzes area and timing to ensure the design meets basic performance constraints. 
+Once the environment is prepared, we perform logic synthesis using the Yosys tool via the run_synthesis command. Throughout this stage, the tool performs Technology Mapping, where every logical operation and behavioral description is translated into a specific physical cell—such as NAND, NOR, or complex AOI gates—selected from the Sky130 Standard Cell Library
+.
+To ensure the design is efficient, Yosys conducts aggressive logic optimizations, including finite state machine (FSM) re-encoding and the insertion of buffers to maintain signal integrity
+. While transforming the logic, the tool simultaneously performs an initial Static Timing Analysis (STA) to evaluate the design’s performance against its target clock period
+. This automated analysis generates comprehensive reports regarding total cell count, silicon area, and timing metrics like Worst Negative Slack (WNS)
+. By analyzing these reports, the flow confirms that the design satisfies its basic performance constraints and is timing-clean—often achieving a zero TNS (Total Negative Slack)—before it advances to the physical design stages of floorplanning and placement. During this optimization, the tool analyzes area and timing to ensure the design meets basic performance constraints.
+
 <img width="407" height="495" alt="Screenshot 2026-05-17 103930" src="https://github.com/user-attachments/assets/ca968fd8-6331-449f-9ce4-198d488cec41" />
 
-The synthesis results for the `picorv32a` design indicate a total cell count of 15,762, including 1,613 flip-flops, resulting in a **flop ratio of 10.23%**. Initial timing analysis reveals a positive outcome with zero Total Negative Slack (TNS) and zero Worst Negative Slack (WNS), providing a safe setup slack margin of **0.52ns** 
+pon the successful completion of the logic synthesis process for the picorv32a core using the OpenLANE flow, the generated gate-level netlist provides detailed quantitative metrics regarding the design's overall physical complexity
+. The synthesis report explicitly identifies a total cell count of 15,762 standard cells, within which there are exactly 1,613 sequential flip-flops responsible for state retention throughout the processor's logic
+. By evaluating the density of these specific registers relative to the total number of logic gates mapped from the Sky130 library, we establish a precise flop ratio of 10.23%, which serves as a foundational benchmark for the design's sequential logic intensity
+.
+Simultaneously, the initial static timing analysis (STA) performed on this post-synthesis netlist indicates a high-performance outcome that meets all fundamental timing requirements established in the design constraints
+. The implementation demonstrates perfect results with a Total Negative Slack (TNS) of 0.00 and a Worst Negative Slack (WNS) of 0.00, which formally confirms that every logic path in the design is currently free from any accumulated timing violations
+. This results in a robust and safe setup slack margin of 0.52ns, effectively ensuring that data signals consistently arrive at their capture registers with a significant positive buffer before the required clock edge, thereby establishing a secure margin for subsequent physical design stages
 
 <img width="603" height="467" alt="Screenshot 2026-05-17 103952" src="https://github.com/user-attachments/assets/d5dbcf2f-ba81-45f1-b1f9-d43a427e3b3f" />
 
@@ -73,13 +86,16 @@ Phase 3 introduces **Static Timing Analysis (STA)** using the **OpenSTA** tool t
 
 
 A major contributor to timing violations is **high fanout**, where a single net drives too many subsequent cells (e.g. here we take a fanout of 10), leading to increased capacitive loading and slower signal transitions. We mitigate these issues by **upsizing buffers** to increase drive strength, which reduces RC delay and improves slack. 
+
 <img width="721" height="574" alt="Screenshot 2026-05-17 144805" src="https://github.com/user-attachments/assets/e7344202-334c-4283-b149-ffe4601cf6cd" />
 
 This modifies the slack:
+
 <img width="808" height="570" alt="Screenshot 2026-05-17 144953" src="https://github.com/user-attachments/assets/da17e246-c431-482d-bad1-111c8ae5f20f" />
 
 
 Additionally, the synthesis strategy can be pivoted; by switching from **"AREA 0"** (focused on minimizing size) to **"DELAY 3"** (prioritizing speed), the tool performs more aggressive logic restructuring to close timing. 
+
 <img width="925" height="266" alt="Screenshot 2026-05-17 154554" src="https://github.com/user-attachments/assets/854b4515-8682-4c51-80ce-d9a35b40ef3d" />
 
 
