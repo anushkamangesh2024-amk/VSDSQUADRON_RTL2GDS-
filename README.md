@@ -14,6 +14,9 @@ To ensure the environment is correctly configured for the **Sky130 PDK**, we loa
 
 <img width="393" height="511" alt="Screenshot 2026-05-17 103840" src="https://github.com/user-attachments/assets/ac2a326e-e4d7-4f33-b53f-3b7a8f90b904" />
 
+
+
+
 <img width="429" height="496" alt="Screenshot 2026-05-17 103905" src="https://github.com/user-attachments/assets/f02c46a1-df5c-495a-b7c4-1d99f7f961d4" />
 
 Once the environment is prepared, we perform logic synthesis using the Yosys tool via the run_synthesis command. Throughout this stage, the tool performs Technology Mapping, where every logical operation and behavioral description is translated into a specific physical cell—such as NAND, NOR, or complex AOI gates—selected from the Sky130 Standard Cell Library
@@ -25,7 +28,7 @@ To ensure the design is efficient, Yosys conducts aggressive logic optimizations
 
 <img width="407" height="495" alt="Screenshot 2026-05-17 103930" src="https://github.com/user-attachments/assets/ca968fd8-6331-449f-9ce4-198d488cec41" />
 
-pon the successful completion of the logic synthesis process for the picorv32a core using the OpenLANE flow, the generated gate-level netlist provides detailed quantitative metrics regarding the design's overall physical complexity
+Upon the successful completion of the logic synthesis process for the picorv32a core using the OpenLANE flow, the generated gate-level netlist provides detailed quantitative metrics regarding the design's overall physical complexity
 . The synthesis report explicitly identifies a total cell count of 15,762 standard cells, within which there are exactly 1,613 sequential flip-flops responsible for state retention throughout the processor's logic
 . By evaluating the density of these specific registers relative to the total number of logic gates mapped from the Sky130 library, we establish a precise flop ratio of 10.23%, which serves as a foundational benchmark for the design's sequential logic intensity
 .
@@ -48,6 +51,9 @@ Floorplanning is the architectural phase where the physical boundaries of the si
 
 Two critical parameters managed in the `config.tcl` file are the **Aspect Ratio** and the **Utilization Factor**. The utilization factor represents the ratio between the area occupied by the netlist and the total core area. While 100% utilization is theoretically possible, it is practically avoided (typically capped at 50-60%) to leave sufficient "white space" for routing interconnects and power distribution networks
 <img width="1082" height="475" alt="Screenshot 2026-05-17 105402" src="https://github.com/user-attachments/assets/af50766d-7d36-4b37-9bf7-7e1cd8840320" />
+
+
+
 <img width="1114" height="554" alt="Screenshot 2026-05-17 120113" src="https://github.com/user-attachments/assets/6feb9612-4d0f-4a85-b3ca-9c57b8660573" />
 
 Corresponding def file:
