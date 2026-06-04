@@ -14,7 +14,7 @@ To ensure the environment is correctly configured for the **Sky130 PDK**, we loa
 
 <img width="393" height="511" alt="Screenshot 2026-05-17 103840" src="https://github.com/user-attachments/assets/ac2a326e-e4d7-4f33-b53f-3b7a8f90b904" />
 
-
+And :
 
 
 <img width="429" height="496" alt="Screenshot 2026-05-17 103905" src="https://github.com/user-attachments/assets/f02c46a1-df5c-495a-b7c4-1d99f7f961d4" />
