@@ -1,15 +1,15 @@
-## WEEK 2 — Toolchain Mastery and ORFS Execution [Cloud to Local]
+# WEEK 2 — Toolchain Mastery and ORFS Execution [Cloud to Local]
 
-# Phase 1
+## Phase 1
 
 # Setup
-<img width="812" height="490" alt="Screenshot 2026-06-04 234129" src="https://github.com/user-attachments/assets/a0922b3b-07f9-4c3f-a537-3763e828cdd7" />
+<img width="812" height="490" alt="Screenshot 2026-06-04 234129" src="https://github.com/user-attachments/assets/a0922b3b-07f9-4c3f-a537-3763e828cdd7" />  
 # Synthesis
-Output of make synth
+Output of make synth  
 
 
 <img width="821" height="283" alt="Screenshot 2026-06-09 232512" src="https://github.com/user-attachments/assets/c9b8ebcb-aa44-4b97-9794-132bc7891d5b" />
-Synthesis report
+Synthesis report  
 
 
 <img width="707" height="282" alt="image" src="https://github.com/user-attachments/assets/2e8df532-22e5-46b0-989a-ef0b367820ac" />
