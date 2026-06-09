@@ -50,7 +50,7 @@ Terminal output confirming the successful completion of the global and detailed 
 # Final Timing report
 
 
-<img width="752" height="628" alt="image" src="https://github.com/user-attachments/assets/af946692-68f4-4ff7-b4ac-04841fcc34d9" />
+<img width="752" height="628" alt="image" src="https://github.com/user-attachments/assets/af946692-68f4-4ff7-b4ac-04841fcc34d9" /> <br/>
 # Total Run time
 Total runtime : 2705 seconds  ~ 45 minutes
 
