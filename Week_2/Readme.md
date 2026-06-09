@@ -6,11 +6,9 @@
 Output of make synth  <br/>
 
 
-<img width="821" height="283" alt="Screenshot 2026-06-09 232512" src="https://github.com/user-attachments/assets/c9b8ebcb-aa44-4b97-9794-132bc7891d5b" />
-Synthesis report  
-
-
-<img width="707" height="282" alt="image" src="https://github.com/user-attachments/assets/2e8df532-22e5-46b0-989a-ef0b367820ac" />
+<img width="821" height="283" alt="Screenshot 2026-06-09 232512" src="https://github.com/user-attachments/assets/c9b8ebcb-aa44-4b97-9794-132bc7891d5b" /> <br/>
+Synthesis report  <br/>
+<img width="707" height="282" alt="image" src="https://github.com/user-attachments/assets/2e8df532-22e5-46b0-989a-ef0b367820ac" /> <br/>
 The synthesis statistical report detailing the post-synthesis metrics. It shows an initial estimated design area of 61,097 µm² at 100% utilization before physical floorplanning and placement expand the core.
 
 # Floorplanning
