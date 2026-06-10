@@ -100,6 +100,16 @@ Re-Run RTL-to-GDS Locally:
 Synthesis <br/>
 <img width="450" height="167" alt="image" src="https://github.com/user-attachments/assets/b540bda4-3617-416c-8ec0-6d49bc811a5f" /> <br/>
 <img width="856" height="88" alt="image" src="https://github.com/user-attachments/assets/ba020dbf-a208-4ff7-b294-a7af7141f24a" />
-
-
+<br/> Placement <br/>
+<img width="563" height="563" alt="image" src="https://github.com/user-attachments/assets/e04c5509-e642-478e-abb0-ac995a9208f7" />
+<br/> Clock Tree Synthesis (CTS) Log <br/>
+<img width="737" height="377" alt="image" src="https://github.com/user-attachments/assets/c46a031c-cf80-428d-b54a-98077edf8e8f" />
+<br/> Routing <br/>
+<img width="948" height="700" alt="image" src="https://github.com/user-attachments/assets/1f4a08ee-811c-45f2-858b-567de408c8ab" />
+<br/> Final GDS generated locally <br/>
+<img width="1062" height="642" alt="image" src="https://github.com/user-attachments/assets/934bd277-f66c-4b82-9897-71db188a9987" />
+<br/> Timing report (WNS/TNS) <br/>
+<img width="602" height="493" alt="image" src="https://github.com/user-attachments/assets/3b8e8033-8fd5-4fd1-a73c-8ed813a66a35" /> <br/>
+WNS = -0.67
+TNS = -12.76
 
