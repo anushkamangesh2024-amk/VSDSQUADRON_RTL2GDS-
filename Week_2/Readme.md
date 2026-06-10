@@ -57,4 +57,49 @@ Total runtime : 2705 seconds  ~ 45 minutes
 <img width="712" height="483" alt="image" src="https://github.com/user-attachments/assets/b7b15f49-1d27-4463-86a2-7ed815918290" />
 
 
+# Phase 2
+
+Task 2.1<br/>
+<img width="1017" height="703" alt="image" src="https://github.com/user-attachments/assets/f7f8282a-ec25-43d7-a888-270ead26bb0e" />
+<br/> Task 2.2 <br/>
+
+What ORFS Automates
+
+The OpenROAD Flow Scripts (ORFS) automate the complete digital ASIC design flow, from RTL to GDSII. ORFS automates the synthesis, floorplanning, placement, clock tree synthesis, routing, timing analysis and GDS generation in the correct order, rather than having to run each EDA tool and feed files to it manually. 
+
+How Makefiles Orchestrate the Flow
+
+A Makefile is the flow controller. It describes the dependencies between different design stages and which commands should be executed for a particular stage. The Makefile says that before placement , synthesis must be performed , before clock tree synthesis , placement must be performed , etc . The user just runs a command like make . It also won’t re-run stages that already have up-to-date outputs.
+
+Where Synthesis Ends and Physical Design Begins
+
+The synthesis stage ends after RTL code is converted into a gate-level netlist consisting of standard cells and logic gates. This is typically performed by Yosys. Once the netlist is generated, the flow moves into physical design, where the logical gates are assigned physical locations on the chip. Physical design starts with floorplanning and placement within OpenROAD.
+
+Where Timing Is Checked
+
+Timing is checked throughout the design flow using OpenSTA (Static Timing Analysis). Timing analysis is performed after synthesis to verify that the gate-level netlist meets timing requirements and is repeated after placement, clock tree synthesis, and routing. These checks ensure that setup and hold constraints are satisfied before the design is finalized.
+
+Where GDS Is Produced
+
+The final GDSII file is produced at the end of the physical design flow after routing and design verification are completed. OpenROAD generates the layout data, which is then exported as a GDSII file. This file contains the geometric representation of all layers of the chip and is the format sent to the semiconductor foundry for fabrication. Tools such as KLayout can be used to view and inspect the generated GDS file.
+
+# Phase 3
+
+Install ORFS Locally<br/>
+<img width="1146" height="356" alt="image" src="https://github.com/user-attachments/assets/2325ca15-222a-4667-975e-1bbebc569da6" />
+
+<br/>Install Official OpenROAD<br/>
+Install OpenROAD from the official OpenROAD repository. <br/>
+<img width="1256" height="498" alt="image" src="https://github.com/user-attachments/assets/ee26d921-e3aa-4bfb-b2ec-f78a2e6bc261" /> <br/>
+<img width="1347" height="770" alt="image" src="https://github.com/user-attachments/assets/b92a4ff7-8594-48d8-90af-9db7a37b9e18" /> <br/>
+Successful compilation of the OpenROAD toolchain from source.
+<img width="1232" height="437" alt="image" src="https://github.com/user-attachments/assets/7bcdf06e-7711-407a-8388-94b2b9a5921b" /> <br/>
+
+# Phase 4
+Re-Run RTL-to-GDS Locally:
+Synthesis <br/>
+<img width="450" height="167" alt="image" src="https://github.com/user-attachments/assets/b540bda4-3617-416c-8ec0-6d49bc811a5f" /> <br/>
+<img width="856" height="88" alt="image" src="https://github.com/user-attachments/assets/ba020dbf-a208-4ff7-b294-a7af7141f24a" />
+
+
 
