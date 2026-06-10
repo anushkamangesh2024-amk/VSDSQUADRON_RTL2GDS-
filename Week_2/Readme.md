@@ -112,4 +112,19 @@ Synthesis <br/>
 <img width="602" height="493" alt="image" src="https://github.com/user-attachments/assets/3b8e8033-8fd5-4fd1-a73c-8ed813a66a35" /> <br/>
 WNS = -0.67
 TNS = -12.76
+<br/> We can find runtime using command time make. <br/>
+<img width="772" height="245" alt="image" src="https://github.com/user-attachments/assets/a80bb4fc-d18c-4307-8915-2c3f141213cd" />
+
+# Phase 5
+The RTL-to-GDS flow was successfully executed locally using OpenROAD Flow Scripts.
+<br/>Searching logs and navigating directories<br/>
+<img width="1037" height="311" alt="image" src="https://github.com/user-attachments/assets/983b2d34-3c68-4259-8560-881ac086562b" /> <br/>
+<img width="755" height="242" alt="image" src="https://github.com/user-attachments/assets/48639a50-2f57-4e72-bae6-3234028e0be6" /> <br/>
+<img width="935" height="235" alt="image" src="https://github.com/user-attachments/assets/f9841dfb-b06f-4f14-a788-1a7ce3c193e3" />
+
+
+<br/>Filtering timing violations using grep <br/>
+<img width="1087" height="150" alt="image" src="https://github.com/user-attachments/assets/21a6d921-81cb-415b-894f-b911c2e0bc87" />
+
+
 
