@@ -103,25 +103,73 @@ These observations confirmed that the synthesis and timing tools successfully re
 
 # PHASE 4 — Run the RTL-to-GDS Flow
 1. Synthesis <br/>
-<img width="1457" height="742" alt="image" src="https://github.com/user-attachments/assets/f5cfe903-87af-4859-9c00-66df9ee7613e" />
-<img width="623" height="660" alt="image" src="https://github.com/user-attachments/assets/8e4596d2-030f-4964-b453-888478f87fb9" />
+<img width="1457" height="742" alt="image" src="https://github.com/user-attachments/assets/f5cfe903-87af-4859-9c00-66df9ee7613e" /> <br/>
+<img width="623" height="660" alt="image" src="https://github.com/user-attachments/assets/8e4596d2-030f-4964-b453-888478f87fb9" /> <br/>
 2. Floorplanning <br/>
-<img width="970" height="498" alt="image" src="https://github.com/user-attachments/assets/1db6e22e-f602-4d69-bf51-f7925b6c23cf" />
-<img width="1317" height="768" alt="image" src="https://github.com/user-attachments/assets/5ec4a55b-4543-4d48-8eb2-9ecc250b0cd8" />
-3. Placement
-<img width="1327" height="772" alt="image" src="https://github.com/user-attachments/assets/d46c42e8-bac5-463e-8744-443640bbf21f" />
-<img width="1096" height="737" alt="image" src="https://github.com/user-attachments/assets/214feb65-5e3f-4435-9b92-07cfcc3e76e7" />
-4. Clock Tree Synthesis
-Min Clock Period = 2.53ns and a maximum frequency of 394.48MHz.
-<img width="1056" height="800" alt="image" src="https://github.com/user-attachments/assets/2fe7c9fe-589b-45ea-b5b2-8981e2d04c9d" />
-<img width="906" height="807" alt="image" src="https://github.com/user-attachments/assets/054bc77b-8efb-4da7-b281-15b27a3dd1c6" />
-5. Routing
-<img width="1057" height="743" alt="image" src="https://github.com/user-attachments/assets/c31ce47a-0c9f-4015-8177-2c410dfc03ee" />
-6. Fill Insertion
-<img width="1321" height="266" alt="image" src="https://github.com/user-attachments/assets/2e982701-8f01-405c-8a0c-135bb9caac29" />
-Final Database Generation
-In the final database generation stage, 6_final.odb the routed and filled design database is finalized for signoff checks and downstream export. The 6_final.odb file is the creation of the last physical-design database inside the EDA tool after routing, fill insertion, and signoff checks. 
-7.  Final GDS generation
-<img width="447" height="480" alt="image" src="https://github.com/user-attachments/assets/23ca6e20-3ee1-40e1-bbb1-87c641e52aa5" />
-8. Timing Report
-<img width="977" height="715" alt="image" src="https://github.com/user-attachments/assets/e57f274d-fec0-4dbe-b33c-9ce79e94b7dc" />
+<img width="970" height="498" alt="image" src="https://github.com/user-attachments/assets/1db6e22e-f602-4d69-bf51-f7925b6c23cf" /> <br/>
+<img width="1317" height="768" alt="image" src="https://github.com/user-attachments/assets/5ec4a55b-4543-4d48-8eb2-9ecc250b0cd8" /> <br/>
+3. Placement <br/>
+<img width="1327" height="772" alt="image" src="https://github.com/user-attachments/assets/d46c42e8-bac5-463e-8744-443640bbf21f" /> <br/>
+<img width="1096" height="737" alt="image" src="https://github.com/user-attachments/assets/214feb65-5e3f-4435-9b92-07cfcc3e76e7" /> <br/>
+4. Clock Tree Synthesis <br/>
+Min Clock Period = 2.53ns and a maximum frequency of 394.48MHz. <br/>
+<img width="1056" height="800" alt="image" src="https://github.com/user-attachments/assets/2fe7c9fe-589b-45ea-b5b2-8981e2d04c9d" /> <br/>
+<img width="906" height="807" alt="image" src="https://github.com/user-attachments/assets/054bc77b-8efb-4da7-b281-15b27a3dd1c6" /> <br/>
+5. Routing <br/>
+<img width="1057" height="743" alt="image" src="https://github.com/user-attachments/assets/c31ce47a-0c9f-4015-8177-2c410dfc03ee" /> <br/>
+6. Fill Insertion <br/>
+<img width="1321" height="266" alt="image" src="https://github.com/user-attachments/assets/2e982701-8f01-405c-8a0c-135bb9caac29" /> <br/>
+Final Database Generation <br/>
+In the final database generation stage, 6_final.odb the routed and filled design database is finalized for signoff checks and downstream export. The 6_final.odb file is the creation of the last physical-design database inside the EDA tool after routing, fill insertion, and signoff checks.  <br/>
+7.  Final GDS generation <br/>
+<img width="447" height="480" alt="image" src="https://github.com/user-attachments/assets/23ca6e20-3ee1-40e1-bbb1-87c641e52aa5" /> <br/>
+8. Timing Report <br/>
+WNS = 0, TNS = 0 and a Worst slack is 7.52ns <br/>
+<img width="977" height="715" alt="image" src="https://github.com/user-attachments/assets/e57f274d-fec0-4dbe-b33c-9ce79e94b7dc" /> <br/>
+
+# PHASE 5 — Generate Outputs for Gate-Level Verification Preparation
+<img width="1717" height="292" alt="image" src="https://github.com/user-attachments/assets/eb181cac-49e4-42f0-9730-0b73be659c77" />
+<img width="1390" height="750" alt="image" src="https://github.com/user-attachments/assets/31993eb0-48c3-4c49-93b9-63e133d011e6" /> <br/>
+Design Outputs Generated During the RTL-to-GDSII Flow
+
+The RTL-to-GDSII implementation process generates a series of files that capture the design at different stages of development. These outputs are essential for verification, analysis, debugging, and eventual fabrication of the chip.
+
+The synthesized netlist is the first gate-level representation of the design. Generated during the synthesis stage, it converts the RTL description into a network of standard cells and logic gates while preserving the intended functionality. This file serves as the starting point for all subsequent physical design activities.
+
+Location:
+/home/vsdsquadron/workspace/vsd-scl180-orfs/orfs/flow/results/sky130hd/user_project_wrapper/base/1_2_yosys.v
+
+After placement, clock tree synthesis, routing, and optimization have been completed, the flow produces the final netlist. This version reflects the implemented design and includes modifications introduced during physical design, such as inserted clock buffers and optimized clock distribution structures.
+
+Location:
+/results/sky130hd/user_project_wrapper/base/6_final.v
+
+The routed database captures the complete state of the design after routing. In addition to logical connectivity, it stores physical information such as cell locations, routing paths, power distribution networks, technology references, and timing-related data. This database allows the implementation environment to be restored without rerunning previous stages of the flow.
+
+Location:
+/results/sky130hd/user_project_wrapper/base/5_route.odb
+
+To prepare the design for fabrication, the routed database is transformed into a final filled database. This version includes manufacturing-specific additions such as filler cells, dummy metal structures, and redundant vias that help satisfy foundry design and density requirements.
+
+Location:
+/results/sky130hd/user_project_wrapper/base/6_1_fill.odb
+
+Once all implementation and manufacturability requirements have been met, the design is exported as a GDSII file. GDSII is the industry-standard format used by semiconductor foundries and contains the geometric layout of the chip, including polygons, routing shapes, and layer information required for mask generation.
+
+Location:
+/results/sky130hd/user_project_wrapper/base/6_final.gds
+
+Throughout the implementation process, timing reports are generated using Static Timing Analysis (STA). These reports evaluate setup and hold timing performance, identify timing violations, and verify that the design can operate at the target clock frequency. Timing analysis is performed at multiple stages, including after clock tree synthesis and at the completion of the flow.
+
+Final Timing Report Location:
+/home/vsdsquadron/workspace/vsd-scl180-orfs/orfs/flow/reports/sky130hd/user_project_wrapper/base/6_finish.rpt
+
+CTS Timing Report Location:
+/home/vsdsquadron/workspace/vsd-scl180-orfs/orfs/flow/reports/sky130hd/user_project_wrapper/base/4_cts_final.rpt
+
+Together, these outputs provide a complete view of the design's progression from RTL code to a fabrication-ready integrated circuit, enabling both logical verification and physical validation before tape-out
+
+# PHASE 6 — Debugging and Issue Resolution
+<img width="1320" height="528" alt="image" src="https://github.com/user-attachments/assets/9072cb1f-327d-4d93-9c00-0c9f3a0cb40f" />
+<img width="1150" height="681" alt="image" src="https://github.com/user-attachments/assets/54f1b668-b812-4cd3-9bad-ee6b54a32441" /> <br/>
+The synthesis run failed due to a missing OpenROAD executable path. Even though synthesis focuses on logic transformation rather than physical implementation, OpenROAD is invoked to generate the .odb database required for downstream stages of the flow. As a workaround, the die area and core area were defined explicitly in config.mk, eliminating the need to rely on automatic area calculation through the CORE_UTILIZATION setting.
