@@ -26,7 +26,7 @@ Extension of Existing Verification Flow for Gate-Level Simulation
 
 The existing RTL verification flow was extended to support Gate-Level Simulation (GLS) without creating a separate verification environment. The same testbench, compilation flow, and simulation infrastructure were retained, while only the design-under-test source was replaced with the generated gate-level netlist and the required standard-cell libraries were added.
 
-Modified Makefile Snippet
+Modifications on Makefile 
 iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
   -y $(CARAVEL_PATH)/rtl \
   -I $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog \
