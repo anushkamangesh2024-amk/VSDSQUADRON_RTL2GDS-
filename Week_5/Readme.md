@@ -228,11 +228,10 @@ The objective was to compare Week-3 RTL simulation with Week-5 Gate-Level Simula
 
 Most modules produced identical outputs in both environments. Data values, control sequences, and functional behavior matched, indicating that synthesis and physical implementation preserved the intended logic.
 
-Two differences were observed:
+Two differences were observed: <br/>
 
-Test	RTL Result	GLS Result	Reason
-Timer	PASS	TIMEOUT	Gate-level delays increased execution time beyond the test timeout limit.
-IRQ	PASS	TIMEOUT	Interrupt response path experienced additional propagation delays.
+<img width="802" height="172" alt="image" src="https://github.com/user-attachments/assets/e89201b9-1587-4699-85a0-61e9db3a3991" /> <br/>
+
 
 Despite these timeout-related differences, the waveform activity and output sequences remained correct in both cases. The failures were caused by timing overhead introduced by gate-level cells, routing, and clock-tree implementation rather than incorrect logic.
 
@@ -241,4 +240,28 @@ No cases were found where the GLS netlist produced incorrect output values compa
 Overall, the comparison confirms functional equivalence between the RTL design and the generated gate-level netlist, with only expected timing differences arising from realistic hardware delays.<br/>
 <img width="772" height="622" alt="image" src="https://github.com/user-attachments/assets/11d8c1bc-d7e4-4c6e-87ea-220d9fea3a61" />
 
+# PHASE 7 — Debugging (If Mismatch Occurs)
+Challenges Encountered and Lessons Learned
+Power Pin Interface Mismatch
+
+The initial gate-level netlist failed during Caravel integration because the expected power pins were missing from the module interface. The issue was identified from elaboration errors indicating a mismatch between the Caravel wrapper and the user project. Enabling USE_POWER_PINS and ensuring that the netlist and wrapper used matching interfaces resolved the problem. This highlighted the importance of power-pin compatibility in SoC-level GLS.
+
+Clock Distribution Effects
+
+Some timing-sensitive tests behaved differently in GLS compared to RTL simulation. Waveform analysis showed slight shifts in signal timing caused by clock buffers, clock skew, and propagation delays introduced during Clock Tree Synthesis (CTS). No design modifications were required, as these effects are expected in a physically implemented design. This demonstrated the impact of real clock distribution on simulation results.
+
+Reset and Initialization Behavior
+
+Differences were observed during the reset release phase between RTL and GLS. Unlike RTL, gate-level simulation reflects actual flip-flop initialization and reset propagation delays. Waveform inspection confirmed that the behavior was caused by realistic hardware timing rather than design errors. This emphasized the importance of proper reset verification in GLS.
+
+Netlist Integration into the Verification Flow
+
+Early GLS runs failed due to missing standard-cell libraries and incorrect netlist integration. The issue was resolved by including the required SKY130 library files (sky130_fd_sc_hd.v and primitives.v) and updating the Makefile to use the generated gate-level netlist (6_final.v). This enabled successful compilation and simulation without modifying the existing verification flow.
+
+Key Takeaways
+Gate-level simulation models real hardware timing and physical effects that are absent in RTL simulation.
+Power-pin consistency is essential when integrating designs into larger SoC environments.
+Clock delays, skew, and buffering are common causes of RTL-to-GLS behavioral differences.
+Reset and initialization behavior require careful verification at gate level.
+Successful GLS execution confirms that the synthesized and implemented design remains functionally correct after physical implementation.
 
