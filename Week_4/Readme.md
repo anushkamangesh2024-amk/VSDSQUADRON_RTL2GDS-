@@ -101,3 +101,5 @@ The successful application of the clock constraint was verified during the ORFS 
 
 These observations confirmed that the synthesis and timing tools successfully read the `constraint.sdc` file and applied the defined clock constraint throughout the implementation flow.
 
+# PHASE 4 — Run the RTL-to-GDS Flow
+1. Synthesis
