@@ -124,6 +124,64 @@
 
 <br/>hkspi<br/>
 <img width="757" height="306" alt="image" src="https://github.com/user-attachments/assets/52e859bb-aa36-48e4-9b75-283c671026ab" />
+<br/>user_pass_thru <br/>
+<img width="758" height="371" alt="image" src="https://github.com/user-attachments/assets/eafb9ee9-d49f-4bad-9788-d395728d59da" />
+<br/>pass_thru <br/>
+<img width="751" height="385" alt="image" src="https://github.com/user-attachments/assets/fd04179e-8e4b-4175-9627-aad61a164300" />
+<br/>uart<br/>
+<img width="756" height="372" alt="image" src="https://github.com/user-attachments/assets/97e90ccc-dca3-4186-8287-b6e2709184b4" />
+
+
+<br/>sysctrl<br/>
+<img width="753" height="382" alt="image" src="https://github.com/user-attachments/assets/e9877dbd-3c97-44cf-b52a-d7f7ea06e878" />
+
+
+<br/>sram_exec<br/>
+<img width="753" height="357" alt="image" src="https://github.com/user-attachments/assets/015581bc-3e5a-4f94-bccd-5a2bd5fd131e" />
+
+
+<br/>spi_master<br/>
+<img width="733" height="321" alt="image" src="https://github.com/user-attachments/assets/432e9edb-3a4c-4b32-b97e-752a79ce0368" />
+
+
+<br/>pullupdown<br/>
+<img width="752" height="387" alt="image" src="https://github.com/user-attachments/assets/ca2e0d8a-8c7a-40b0-a1f5-b1c3a370efd3" />
+
+
+<br/>pll<br/>
+<img width="755" height="400" alt="image" src="https://github.com/user-attachments/assets/90840bdc-24b0-4c47-ad60-4be9738526cd" />
+
+
+<br/>pass_thru_fix<br/>
+<img width="753" height="362" alt="image" src="https://github.com/user-attachments/assets/40186d12-a39b-4e5b-ab8a-5adf2fca008b" />
+
+
+
+<br/>mem<br/>
+<img width="756" height="383" alt="image" src="https://github.com/user-attachments/assets/0026eadb-6e2d-45f8-afca-bdb4dae4ebd8" />
+
+
+<br/>hkspi_power<br/>
+<img width="755" height="292" alt="image" src="https://github.com/user-attachments/assets/a2d21392-73ff-474c-9cb9-bf0f1592ac30" />
+
+
+<br/>gpio_mgmt<br/>
+<img width="732" height="250" alt="image" src="https://github.com/user-attachments/assets/d053c419-521c-429b-bfa5-21c761d4891c" />
+
+
+<br/>hkspi<br/>
+<img width="757" height="306" alt="image" src="https://github.com/user-attachments/assets/52e859bb-aa36-48e4-9b75-283c671026ab" />
+
+
+<br/> Summary <br/>
+<img width="787" height="676" alt="image" src="https://github.com/user-attachments/assets/60cc494c-4dbb-4853-aa86-0f5774d6a98c" />
+
+
+<img width="802" height="172" alt="image" src="https://github.com/user-attachments/assets/e89201b9-1587-4699-85a0-61e9db3a3991" /> <br/>
+
+
+
+<img width="772" height="622" alt="image" src="https://github.com/user-attachments/assets/11d8c1bc-d7e4-4c6e-87ea-220d9fea3a61" />
 
 
 <br/> Summary <br/>
