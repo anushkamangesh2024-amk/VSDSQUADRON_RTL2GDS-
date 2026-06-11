@@ -221,4 +221,24 @@ The SYSCTRL test exhibits the same failure behavior in both RTL and Gate-Level S
 <br/> Summary <br/>
 <img width="787" height="676" alt="image" src="https://github.com/user-attachments/assets/60cc494c-4dbb-4853-aa86-0f5774d6a98c" />
 
+# PHASE 6 — RTL vs GLS Comparison
+RTL vs Gate-Level Simulation Comparison
+
+The objective was to compare Week-3 RTL simulation with Week-5 Gate-Level Simulation (GLS) and verify that the implemented netlist preserves the original design functionality.
+
+Most modules produced identical outputs in both environments. Data values, control sequences, and functional behavior matched, indicating that synthesis and physical implementation preserved the intended logic.
+
+Two differences were observed:
+
+Test	RTL Result	GLS Result	Reason
+Timer	PASS	TIMEOUT	Gate-level delays increased execution time beyond the test timeout limit.
+IRQ	PASS	TIMEOUT	Interrupt response path experienced additional propagation delays.
+
+Despite these timeout-related differences, the waveform activity and output sequences remained correct in both cases. The failures were caused by timing overhead introduced by gate-level cells, routing, and clock-tree implementation rather than incorrect logic.
+
+No cases were found where the GLS netlist produced incorrect output values compared to RTL. Therefore, the observed mismatches are timing-related and do not indicate synthesis or implementation errors.
+
+Overall, the comparison confirms functional equivalence between the RTL design and the generated gate-level netlist, with only expected timing differences arising from realistic hardware delays.<br/>
+<img width="772" height="622" alt="image" src="https://github.com/user-attachments/assets/11d8c1bc-d7e4-4c6e-87ea-220d9fea3a61" />
+
 
