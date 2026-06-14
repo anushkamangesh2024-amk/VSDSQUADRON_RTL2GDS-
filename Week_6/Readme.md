@@ -1,15 +1,15 @@
 # PHASE 1 — Block Selection and Analysis
-# RTL Block Analysis – housekeeping_spi
+## RTL Block Analysis – housekeeping_spi
 
-## Overview
+### Overview
 
-The **housekeeping_spi** block was selected for RTL analysis from the Caravel SoC RTL repository. This module implements the Serial Peripheral Interface (SPI) used for chip configuration, housekeeping register access, and flash pass-through operations.
+The housekeeping_spi block was selected for RTL analysis from the Caravel SoC RTL repository. This module implements the Serial Peripheral Interface (SPI) used for chip configuration, housekeeping register access, and flash pass-through operations.
 
 The block was chosen because it is self-contained, has a clearly defined interface, and represents a practical example of a control-oriented digital design.
 
----
 
-## Top Module
+
+### Top Module
 
 | Property    | Description                                                            |
 | ----------- | ---------------------------------------------------------------------- |
@@ -18,9 +18,7 @@ The block was chosen because it is self-contained, has a clearly defined interfa
 | Function    | SPI controller for housekeeping register access and flash pass-through |
 | Design Type | Sequential FSM-based controller                                        |
 
----
-
-## Module Interface
+### Module Interface
 
 ### Inputs
 
@@ -45,13 +43,11 @@ The block was chosen because it is self-contained, has a clearly defined interfa
 * `pass_thru_mgmt_reset`
 * `pass_thru_user_reset`
 
----
-
 ## RTL Hierarchy
 
 The design contains a single top-level module with no instantiated submodules. Internally, the functionality is organized into several logical blocks:
 
-```text
+
 housekeeping_spi
 │
 ├── SPI Command Decoder
@@ -60,7 +56,7 @@ housekeeping_spi
 ├── Finite State Machine (FSM)
 ├── Pass-Through Control Logic
 └── Shift Registers (TX/RX)
-```
+
 
 ### Internal Functionality
 
@@ -70,7 +66,6 @@ housekeeping_spi
 * Provides pass-through access to management and user flash memories.
 * Uses an FSM to manage transaction flow.
 
----
 
 ## RTL Dependencies
 
@@ -84,11 +79,9 @@ The following RTL files are required for successful synthesis and integration:
 
 ### RTL Directory
 
-```text
-~/vsd-scl180-orfs/orfs/flow/designs/sky130hd/housekeeping_spi/rtl/
-```
 
----
+~/vsd-scl180-orfs/orfs/flow/designs/sky130hd/housekeeping_spi/rtl/
+
 
 ## Key Observations
 
@@ -98,11 +91,11 @@ The following RTL files are required for successful synthesis and integration:
 * Includes automatic address incrementing during streaming transfers.
 * Implements clean transaction termination through chip-select based reset logic.
 
----
+
 
 ## Conclusion
 
-The **housekeeping_spi** block is a compact SPI controller that manages housekeeping register access and flash pass-through functionality within the Caravel platform. Its well-defined interface, FSM-based architecture, and limited dependencies make it suitable for RTL analysis and subsequent RTL-to-GDSII implementation.
+The housekeeping_spi block is a compact SPI controller that manages housekeeping register access and flash pass-through functionality within the Caravel platform. Its well-defined interface, FSM-based architecture, and limited dependencies make it suitable for RTL analysis and subsequent RTL-to-GDSII implementation.
 
 # PHASE 2 — RTL-to-GDS Implementation
 
@@ -124,6 +117,9 @@ Here we set up ORFS flow for the selected block, organize RTL files correctly, a
 
  <br/>Routing completion <br/>
  <img width="1237" height="672" alt="image" src="https://github.com/user-attachments/assets/0d5356f8-8e2c-4de8-87d6-85293c8e6513" /> <br/>
+ [INFO DRT-0198] Complete detail routing.
+[INFO ANT-0002] Found 0 net violations.
+[INFO ANT-0001] Found 0 pin violations.<br/>
 <img width="1232" height="672" alt="image" src="https://github.com/user-attachments/assets/920fd800-3591-465b-aab5-d5ceda6820d5" />
 
  <br/>Final GDS generated <br/>
