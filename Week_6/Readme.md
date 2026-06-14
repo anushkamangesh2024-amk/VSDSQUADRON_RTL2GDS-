@@ -379,56 +379,34 @@ The transition from RTL simulation to gate-level simulation required several mod
 
 <img width="987" height="457" alt="image" src="https://github.com/user-attachments/assets/54f16ad5-f47f-416a-852f-bb1e4e36a196" />
 
-Step 1 — Netlist Validation
+Verification Preparation
 
-Before running GLS, the generated netlist was inspected to confirm:
+Before starting Gate-Level Simulation (GLS), the generated netlist was carefully reviewed to ensure it was suitable for simulation. This involved checking that the correct top-level module had been synthesized, verifying that all expected input and output ports were present, and confirming that the RTL-to-GDS flow had completed successfully through synthesis, placement, and routing. Performing this review early helped avoid debugging issues caused by using an incorrect or incomplete netlist.
 
-Correct module name
-Presence of all I/O ports
-Successful completion of synthesis and routing
+Resolving Simulation Dependencies
 
-This ensured that the verification environment was targeting the correct implementation file.
+Unlike RTL code, a gate-level netlist consists of standard-cell instances from the SKY130 library. As a result, the simulator cannot interpret the netlist unless the corresponding library models are provided during compilation. To address this, the required SKY130 files (primitives.v and sky130_fd_sc_hd.v) were added to the simulation environment. Once these dependencies were included, the simulator was able to resolve every cell instance and compile the design successfully.
 
-Step 2 — Dependency Resolution
+Extending the Existing Verification Flow
 
-The netlist contained SKY130 standard-cell instances that are not understood by the simulator by default. Library model files were therefore included so that every instantiated cell could be resolved during compilation.
+Rather than creating a completely new verification framework for GLS, the existing RTL verification flow was reused and extended. The primary modification involved replacing the RTL design file with the generated gate-level netlist while keeping the original testbench structure intact. This approach minimized changes to the verification environment and allowed a direct comparison between RTL and gate-level behavior under the same test conditions.
 
-Step 3 — Simulation Flow Update
+Functional Verification
 
-Instead of creating a new verification framework, the existing simulation flow was extended. The RTL design reference was replaced with the generated gate-level netlist while preserving the original testbench infrastructure.
+After the simulation environment was configured, both standalone block-level simulations and full system-level simulations were executed. The resulting waveforms and simulation logs were examined to verify key functionality, including SPI command processing, address decoding, data transfers, and reset operation. The gate-level implementation produced the same functional results as the RTL design, demonstrating that the synthesis and physical implementation stages had preserved the intended behavior of the module.
 
-Step 4 — Functional Validation
+Lessons Learned
 
-Both standalone and system-level simulations were executed. Waveforms and console outputs were reviewed to verify:
+One of the most important observations from this exercise was that a gate-level netlist cannot be simulated in isolation. The simulator must have access to the same standard-cell libraries used during synthesis; otherwise, compilation will fail due to unresolved cell references.
 
-SPI command decoding
-Read and write transactions
-Address generation
-Reset behavior
+Another key takeaway is that GLS involves more than simply replacing an RTL file with a netlist. Successful execution depends on correctly configuring library paths, include directories, compilation order, and hierarchy resolution. Many simulation failures originate from environment configuration issues rather than actual design problems.
 
-The observed behavior matched the expected RTL operation.
+The project also demonstrated the value of reusing existing verification infrastructure. By extending the original RTL flow instead of developing a separate GLS framework, verification effort was reduced while maintaining consistency between RTL and gate-level testing.
 
-Important Takeaways
-Understanding Dependencies Matters
+A particularly effective strategy was the use of mixed-level simulation, where the target block was simulated using its gate-level netlist while the remainder of the SoC continued to use RTL models. This provided realistic implementation validation without requiring a complete gate-level version of the entire system.
 
-A synthesized netlist cannot run independently. The simulator must also have access to the standard-cell library models used during synthesis.
+Finally, although GLS introduces physical effects such as gate delays and implementation-specific details, the ultimate goal remains unchanged: confirming that the implemented hardware behaves exactly as intended by the RTL specification.
 
-GLS Is More Than Replacing RTL
+Conclusion
 
-Successful gate-level simulation requires proper integration of libraries, include paths, compilation order, and hierarchy resolution.
-
-Existing Flows Can Be Reused
-
-Rather than building a new verification environment, the original RTL flow can often be extended with minimal modifications, reducing verification effort.
-
-Mixed-Level Simulation Is Effective
-
-Using a gate-level model for the target block while keeping the rest of the SoC at RTL provided a practical and efficient validation strategy.
-
-Functional Validation Remains the Priority
-
-Although gate-level simulation introduces realistic implementation details, the primary objective remains confirming that the implemented design behaves identically to the RTL specification.
-
-Final Reflection
-
-The majority of debugging effort was spent on environment configuration and simulation setup rather than fixing design bugs. Once the correct netlist, libraries, and hierarchy paths were in place, both block-level and SoC-level GLS completed successfully. The exercise provided valuable experience in integrating post-layout netlists into an existing verification flow and highlighted the additional considerations required when moving from RTL verification to implementation-aware simulation.
+Most of the effort during GLS integration was spent configuring the simulation environment rather than correcting functional design issues. Challenges such as library inclusion, hierarchy resolution, and netlist integration were systematically resolved through debugging and verification. Once the environment was properly configured, both block-level and system-level simulations completed successfully, and the observed behavior matched RTL expectations. This exercise provided practical experience in post-implementation verification and highlighted the additional considerations required when transitioning from RTL simulation to gate-level validation.
