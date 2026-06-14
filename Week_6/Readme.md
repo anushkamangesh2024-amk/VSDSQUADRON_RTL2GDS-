@@ -48,14 +48,14 @@ The block was chosen because it is self-contained, has a clearly defined interfa
 The design contains a single top-level module with no instantiated submodules. Internally, the functionality is organized into several logical blocks:
 
 
-housekeeping_spi
-│
-├── SPI Command Decoder
-├── Address Processing Logic
-├── Data Processing Logic
-├── Finite State Machine (FSM)
-├── Pass-Through Control Logic
-└── Shift Registers (TX/RX)
+housekeeping_spi<br/>
+│<br/>
+├── SPI Command Decoder<br/>
+├── Address Processing Logic<br/>
+├── Data Processing Logic<br/>
+├── Finite State Machine (FSM)<br/>
+├── Pass-Through Control Logic<br/>
+└── Shift Registers (TX/RX)<br/>
 
 
 ### Internal Functionality
