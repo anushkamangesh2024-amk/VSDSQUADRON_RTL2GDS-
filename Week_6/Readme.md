@@ -372,13 +372,8 @@ Challenges Encountered During GLS Integration
 
 The transition from RTL simulation to gate-level simulation required several modifications to the verification environment. Most of the issues were related to simulation setup rather than design functionality.
 
-Challenge Log
-Challenge	Observation	Action Taken	Outcome
-Standard-cell models unavailable	Simulator reported unresolved SKY130 cells used in the synthesized netlist	Added primitives.v and sky130_fd_sc_hd.v to the compilation command	Netlist compiled successfully
-Incorrect design file referenced	Simulation was using the default wrapper instead of the generated gate-level netlist	Updated the Makefile to point to 6_final.v	GLS executed on the intended design
-SoC-level module resolution errors	Caravel-related modules could not be located during elaboration	Added RTL search paths using -y and -I options	Missing module errors were eliminated
-GLS environment assumptions	Existing flow expected a complete gate-level SoC implementation	Configured a mixed simulation environment with gate-level housekeeping_spi and RTL Caravel modules	System-level simulation completed successfully
-Verification Process Followed
+<img width="987" height="457" alt="image" src="https://github.com/user-attachments/assets/54f16ad5-f47f-416a-852f-bb1e4e36a196" />
+
 Step 1 — Netlist Validation
 
 Before running GLS, the generated netlist was inspected to confirm:
