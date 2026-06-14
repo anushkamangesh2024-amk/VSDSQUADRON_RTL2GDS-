@@ -153,6 +153,11 @@ Slack / critical path ratio	142.68%<br/>
 Gate-Level Simulation (GLS) Integration and Validation
 Netlist Integration
 
+
+<img width="1050" height="588" alt="image" src="https://github.com/user-attachments/assets/8ee3601a-6cb4-484f-817b-ca3eec41e6ce" />
+
+
+
 The generated gate-level netlist (6_final.v) was integrated into the existing verification flow without creating a new simulation framework. The RTL design reference was replaced with the synthesized gate-level netlist while preserving the original testbench and execution methodology.
 
 Makefile / Simulation Setup Changes
