@@ -70,13 +70,13 @@ housekeeping_spi
 ## RTL Dependencies
 
 The following RTL files are required for successful synthesis and integration:
-
+''''
 | File                 | Purpose                                    |
 | -------------------- | ------------------------------------------ |
 | `housekeeping_spi.v` | Top-level SPI controller                   |
 | `defines.v`          | Global macros and configuration parameters |
 | `debug_regs.v`       | Housekeeping subsystem support module      |
-
+''''
 ### RTL Directory
 
 
