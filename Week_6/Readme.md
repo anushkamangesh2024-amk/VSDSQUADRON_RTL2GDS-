@@ -126,3 +126,309 @@ Here we set up ORFS flow for the selected block, organize RTL files correctly, a
 <img width="576" height="642" alt="image" src="https://github.com/user-attachments/assets/d245dd99-de69-4db8-bb5a-b12e95c2a4ea" />
 
 # PHASE 3 — Generate Implementation Outputs
+<br/>Synthesized netlist<br/>
+<img width="630" height="461" alt="image" src="https://github.com/user-attachments/assets/e300855f-313c-4c6a-a24b-bb74b6e52a0e" />
+
+<br/>Final netlist<br/>
+<img width="592" height="443" alt="image" src="https://github.com/user-attachments/assets/53ffbb5e-ba62-42ef-8edd-d09e344f379b" />
+
+<br/>DEF / database<br/>
+<img width="590" height="443" alt="image" src="https://github.com/user-attachments/assets/2740e388-3d57-46ee-829d-45c98c9d8022" />
+
+<br/>Filled database, GDSII<br/>
+<img width="365" height="402" alt="image" src="https://github.com/user-attachments/assets/75f8e10a-c599-49be-8cab-e2c08dcb7d12" />
+
+<br/>Timing report<br/>
+TNS (Total Negative Slack)	0.00 ps 
+WNS (Worst Negative Slack)	0.00 ps 
+Worst slack (max)	+4.70 ns 
+Clock period minimum	5.30 ns
+f_max achievable	188.80 MHz
+Critical path delay	3.30 ns
+Slack / critical path ratio	142.68%<br/>
+<img width="853" height="443" alt="image" src="https://github.com/user-attachments/assets/41f51eea-fbe7-48f1-930d-1c275ba7ffc6" />
+
+
+# PHASE 4 — Gate-Level Simulation (GLS)
+Gate-Level Simulation (GLS) Integration and Validation
+Netlist Integration
+
+The generated gate-level netlist (6_final.v) was integrated into the existing verification flow without creating a new simulation framework. The RTL design reference was replaced with the synthesized gate-level netlist while preserving the original testbench and execution methodology.
+
+Makefile / Simulation Setup Changes
+
+The simulation setup was updated to:
+
+Replace the RTL source with 6_final.v.
+Include the SKY130 standard-cell libraries:
+sky130_fd_sc_hd.v
+primitives.v
+Retain the existing simulation flags (FUNCTIONAL, GL, SIM, UNIT_DELAY).
+Enable power-pin support for system-level simulation using USE_POWER_PINS.
+
+Modified GLS Compilation Structure
+
+iverilog \
+  -DFUNCTIONAL \
+  -DGL \
+  -DUNIT_DELAY=#1 \
+  hkspi_tb_simple.v \
+  6_final.v \
+  sky130_fd_sc_hd.v \
+  primitives.v
+GLS Execution
+
+Two independent GLS environments were used:
+
+Validation Level	Testbench	Netlist Used
+Block-Level	hkspi_tb_simple.v	6_final.v
+System-Level	hkspi_tb.v (Caravel)	6_final.v
+Functional Verification Results
+Check	Result
+Netlist compilation	PASS
+Standard-cell resolution	PASS
+No missing module errors	PASS
+Simulation execution	PASS
+VCD waveform generation	PASS
+Write transaction verification	PASS
+Read transaction verification	PASS
+Reset behavior verification	PASS
+RTL vs GLS waveform correlation	PASS
+Outcome
+
+The gate-level netlist was successfully integrated into the verification flow and simulated using both block-level and full-Caravel environments. All tests executed without compilation or elaboration errors, and the observed behavior matched the expected RTL functionality. The generated GLS waveforms confirmed that the implemented design remained functionally equivalent to the original RTL specification.
+
+# PHASE 5 — Waveform Validation
+We generate .vcd during GLS, open waveform in GTKWave and observe gate-level signal activity <br/>
+
+
+<img width="607" height="286" alt="image" src="https://github.com/user-attachments/assets/959da51e-8868-46a8-9f97-9e6410f2c683" /><br/>
+Block-level GLS waveform — hkspi_gls.vcd — 0 to 7055 ns.
+Signals: CSB, SCK, SDO, SDI, reset, wrstb, sdoenb, read_data[7:0], rdstb, idata[7:0]<br/>
+<img width="596" height="240" alt="image" src="https://github.com/user-attachments/assets/bddf17b4-5221-41a5-8364-94d91545ee8e" /><br/>
+<img width="602" height="316" alt="image" src="https://github.com/user-attachments/assets/e9c93a19-834b-4a65-96dd-772f0d8fb79d" /><br/>
+
+System-level GL waveform — GL-hkspi.vcd — 0 to 61410 ns.
+Signals: CSB, clock, RSTB, SCK, SDI, SDO, checkbits[15:0], uart_tx, uart_rx
+
+Signal analysis:
+CSB (Chip Select Bar)
+Purpose: Defines the start and end of SPI transactions and is active LOW.
+RTL Observation: Regular CSB pulses are generated as firmware performs register accesses through the SPI interface.
+GLS Observation: The CSB pulse pattern matches RTL exactly, confirming correct transaction handling by the gate-level netlist.
+SCK (SPI Clock)
+Purpose: Provides the clock for SPI communication, with data sampled on the positive edge and driven on the negative edge.
+RTL Observation: Each transaction contains the expected clock bursts corresponding to command, address, and data transfers.
+GLS Observation: The clock waveform matches RTL, with each transaction showing the same 24-clock-cycle SPI frame structure.
+SDI (Serial Data Input)
+Purpose: Carries SPI command, address, and data bits into the design.
+RTL Observation: Command and data bytes are transmitted serially in the expected MSB-first format.
+GLS Observation: The SDI bit stream is identical to RTL, demonstrating correct data capture and protocol implementation in the gate-level netlist.
+
+# PHASE 6 — RTL vs GLS Validation
+Functional Verification: RTL vs Gate-Level Simulation (GLS)
+Objective
+
+The purpose of this verification activity was to ensure that the gate-level netlist generated after synthesis, placement, clock-tree synthesis, and routing remained functionally equivalent to the original RTL design. The final netlist (6_final.v) was integrated into the simulation environment and executed using both block-level and system-level testbenches.
+
+The verification focused on confirming that:
+
+Functional behavior was preserved after physical implementation.
+RTL and GLS produced equivalent outputs for the same inputs.
+No logic errors were introduced during synthesis or optimization.
+The implemented design operated correctly under realistic gate-level conditions.
+Verification Method
+
+Two independent GLS approaches were used:
+
+1. Block-Level Verification
+
+A dedicated testbench (hkspi_tb_simple.v) directly instantiated the housekeeping_spi gate-level netlist. This allowed focused verification of SPI transactions without involving the complete Caravel SoC environment.
+
+The following operations were tested:
+
+SPI Write transaction
+SPI Read transaction
+Reset during an active transaction
+2. System-Level Verification
+
+The official Caravel testbench (hkspi_tb.v) was used to verify the gate-level netlist within the complete SoC environment. In this setup, firmware running on the RISC-V processor generated the SPI transactions, providing a realistic end-to-end validation scenario.
+
+Functional Comparison Results
+Write Operation Verification
+
+The write transaction sent:
+
+Command: 0x80 (Write)
+Address: 0x08
+Data: 0x37
+
+Observed GLS behavior:
+
+Address decoded correctly as 0x08
+Output data captured correctly as 0x37
+wrstb asserted at the end of the transaction
+
+The observed behavior matched the expected RTL functionality exactly.
+
+Read Operation Verification
+
+The read transaction sent:
+
+Command: 0x40 (Read)
+Address: 0x08
+
+A fixed value of 0xA5 was provided through the idata input.
+
+Observed GLS behavior:
+
+Address decoded correctly
+Read strobe (rdstb) asserted correctly
+Returned value was 0xA5
+
+The returned data matched the expected value, confirming correct operation of the read path.
+
+Reset Verification
+
+A reset was asserted in the middle of an active SPI transaction.
+
+Observed GLS behavior:
+
+State machine immediately returned to its idle state
+Address output returned to 0x00
+Internal transaction state was cleared
+
+This behavior matched the intended RTL reset functionality.
+
+RTL vs GLS Waveform Comparison
+
+Several key signals were examined in both RTL and GLS waveforms.
+
+CSB (Chip Select)
+
+The active-low transaction boundaries appeared at identical locations in both simulations. Every firmware-generated SPI transaction observed in RTL was also present in GLS.
+
+SCK (SPI Clock)
+
+The SPI clock burst structure remained unchanged. Each transaction contained the expected sequence of clock pulses corresponding to command, address, and data transfers.
+
+SDI (Serial Data Input)
+
+The serial command and data stream observed in GLS matched the RTL waveform bit-for-bit, confirming correct data capture by the synthesized logic.
+
+SDO (Serial Data Output)
+
+Readback data was transmitted correctly and matched RTL behavior throughout the simulation.
+
+Mismatch Investigation
+
+During verification, the RTL and GLS results were carefully compared to identify any functional discrepancies.
+
+Functional Mismatches
+
+No functional mismatches were observed.
+
+The following checks all passed successfully:
+
+Check	Result
+Write data correctness	Pass
+Read data correctness	Pass
+Address decoding	Pass
+FSM state transitions	Pass
+Reset behavior	Pass
+SPI protocol compliance	Pass
+System-level execution	Pass
+Root Cause Analysis
+
+Since no mismatches were detected:
+
+No root-cause investigation was required.
+No corrective actions were necessary.
+No design modifications were needed.
+
+Any minor timing differences observed between RTL and GLS were expected because GLS includes gate propagation delays and physical implementation effects, whereas RTL assumes ideal timing. These timing differences did not affect functionality.
+
+Verification Outcome
+
+The gate-level netlist successfully completed both block-level and full-system simulations without compilation, elaboration, or runtime errors. All functional tests passed, and the outputs produced by GLS matched the expected RTL behavior.
+
+Final Assessment
+Item	Status
+GLS execution successful	PASS
+Functional correctness preserved	PASS
+RTL and GLS outputs match	PASS
+Logic behavior preserved after implementation	PASS
+Functional mismatches found	NONE
+Root-cause analysis required	NO
+Resolution required	NO
+Conclusion
+
+The verification confirms that the housekeeping_spi gate-level netlist (6_final.v) is functionally equivalent to the original RTL design. Both isolated block-level testing and full Caravel SoC testing produced the expected results, demonstrating that synthesis and physical implementation preserved the intended functionality of the design without introducing any logic errors.
+
+# PHASE 7 — Debugging and Insights
+
+
+Challenges Encountered During GLS Integration
+
+The transition from RTL simulation to gate-level simulation required several modifications to the verification environment. Most of the issues were related to simulation setup rather than design functionality.
+
+Challenge Log
+Challenge	Observation	Action Taken	Outcome
+Standard-cell models unavailable	Simulator reported unresolved SKY130 cells used in the synthesized netlist	Added primitives.v and sky130_fd_sc_hd.v to the compilation command	Netlist compiled successfully
+Incorrect design file referenced	Simulation was using the default wrapper instead of the generated gate-level netlist	Updated the Makefile to point to 6_final.v	GLS executed on the intended design
+SoC-level module resolution errors	Caravel-related modules could not be located during elaboration	Added RTL search paths using -y and -I options	Missing module errors were eliminated
+GLS environment assumptions	Existing flow expected a complete gate-level SoC implementation	Configured a mixed simulation environment with gate-level housekeeping_spi and RTL Caravel modules	System-level simulation completed successfully
+Verification Process Followed
+Step 1 — Netlist Validation
+
+Before running GLS, the generated netlist was inspected to confirm:
+
+Correct module name
+Presence of all I/O ports
+Successful completion of synthesis and routing
+
+This ensured that the verification environment was targeting the correct implementation file.
+
+Step 2 — Dependency Resolution
+
+The netlist contained SKY130 standard-cell instances that are not understood by the simulator by default. Library model files were therefore included so that every instantiated cell could be resolved during compilation.
+
+Step 3 — Simulation Flow Update
+
+Instead of creating a new verification framework, the existing simulation flow was extended. The RTL design reference was replaced with the generated gate-level netlist while preserving the original testbench infrastructure.
+
+Step 4 — Functional Validation
+
+Both standalone and system-level simulations were executed. Waveforms and console outputs were reviewed to verify:
+
+SPI command decoding
+Read and write transactions
+Address generation
+Reset behavior
+
+The observed behavior matched the expected RTL operation.
+
+Important Takeaways
+Understanding Dependencies Matters
+
+A synthesized netlist cannot run independently. The simulator must also have access to the standard-cell library models used during synthesis.
+
+GLS Is More Than Replacing RTL
+
+Successful gate-level simulation requires proper integration of libraries, include paths, compilation order, and hierarchy resolution.
+
+Existing Flows Can Be Reused
+
+Rather than building a new verification environment, the original RTL flow can often be extended with minimal modifications, reducing verification effort.
+
+Mixed-Level Simulation Is Effective
+
+Using a gate-level model for the target block while keeping the rest of the SoC at RTL provided a practical and efficient validation strategy.
+
+Functional Validation Remains the Priority
+
+Although gate-level simulation introduces realistic implementation details, the primary objective remains confirming that the implemented design behaves identically to the RTL specification.
+
+Final Reflection
+
+The majority of debugging effort was spent on environment configuration and simulation setup rather than fixing design bugs. Once the correct netlist, libraries, and hierarchy paths were in place, both block-level and SoC-level GLS completed successfully. The exercise provided valuable experience in integrating post-layout netlists into an existing verification flow and highlighted the additional considerations required when moving from RTL verification to implementation-aware simulation.
