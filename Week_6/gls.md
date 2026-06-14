@@ -1,6 +1,11 @@
 # Gate-Level Simulation (GLS) Integration and Validation
 Netlist Integration
 
+
+<img width="1050" height="588" alt="image" src="https://github.com/user-attachments/assets/7b6eb780-1b0a-4295-ba53-494aae416c5d" />
+
+
+
 The generated gate-level netlist (6_final.v) was integrated into the existing verification flow without creating a new simulation framework. The RTL design reference was replaced with the synthesized gate-level netlist while preserving the original testbench and execution methodology.
 
 Makefile / Simulation Setup Changes
